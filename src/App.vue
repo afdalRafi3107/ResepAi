@@ -1,7 +1,7 @@
 <script setup>
-import InputBahan from "./components/InputBahan.vue";
+import Home from "./pages/Home.vue";
 </script>
 
 <template>
-  <InputBahan />
+  <Home />
 </template>

@@ -1,49 +1,83 @@
 <script setup>
 import { ref } from "vue";
 
+const emit = defineEmits(["submit"]);
+
 const bahanResep = ref("");
 const listbahanResep = ref([]);
+
+// Fungsi untuk menambahkan bahan ke dalam daftar
 function tambahBahan() {
   if (bahanResep.value.trim()) {
     listbahanResep.value.push(bahanResep.value.trim());
     bahanResep.value = "";
   }
-  console.log("bahan resep : ", listbahanResep);
+  // Tidak ada emit di sini untuk mencegah panggilan API yang tidak perlu
 }
+
+// Fungsi untuk menghapus bahan dari daftar
 function hapusBahanMasak(index) {
   listbahanResep.value.splice(index, 1);
+}
+
+// Fungsi ini dipanggil hanya saat tombol 'Cari Resep' diklik
+function kirimKeParent() {
+  emit("submit", listbahanResep.value);
 }
 </script>
 
 <template>
-  <div class="space-y-2 flex flex-col gap-2">
-    <div class="flex gap-2">
+  <div
+    class="w-full flex flex-col gap-4 space-y-4 max-w-2xl mx-auto p-4 sm:p-0"
+  >
+    <div class="flex flex-col sm:flex-row gap-3">
       <input
         v-model="bahanResep"
+        @keyup.enter="tambahBahan"
         type="text"
-        class="border p-2 rounded w-full"
-        placeholder="Masukkan Bahan Dapurmu"
+        class="flex-grow border border-gray-300 p-3 rounded-lg w-full text-lg placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition-all duration-200"
+        placeholder="Contoh: Ayam, Bawang Merah, Cabai Rawit..."
       />
       <button
         @click="tambahBahan"
-        class="bg-orange-500 text-white px-6 py-2 rounded"
+        class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 w-full sm:w-auto text-lg"
       >
-        +
+        Tambah Bahan
       </button>
     </div>
-    <div class="flex flex-wrap gap-2">
+
+    <div
+      v-if="listbahanResep.length > 0"
+      class="flex flex-wrap gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200"
+    >
       <span
         v-for="(item, i) in listbahanResep"
         :key="i"
-        class="bg-gray-200 px-3 py-1 text-black rounded"
-        >{{ item }}
+        class="bg-indigo-100 text-indigo-800 px-4 py-2 text-base font-medium rounded-full flex items-center shadow-sm"
+      >
+        {{ item }}
         <button
           @click="hapusBahanMasak(i)"
-          class="p-0 m-0 rounded-full cursor-pointer text-red-500 hover:text-red-800"
+          class="ml-2 -mr-1 text-indigo-600 hover:text-indigo-900 font-bold text-lg cursor-pointer"
+          title="Hapus bahan"
         >
-          x
+          ×
         </button>
       </span>
     </div>
+    <div
+      v-else
+      class="text-center text-gray-500 p-4 bg-gray-50 rounded-lg border border-gray-200"
+    >
+      <p>Belum ada bahan yang ditambahkan.</p>
+    </div>
+
+    <button
+      @click="kirimKeParent"
+      :disabled="listbahanResep.length === 0"
+      class="bg-indigo-600 text-white px-8 py-4 rounded-lg font-bold text-xl hover:bg-indigo-700 transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 w-full"
+    >
+      Cari Resep Sekarang
+    </button>
   </div>
 </template>
