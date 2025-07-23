@@ -1,23 +1,17 @@
 import { GoogleGenAI } from "@google/genai";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Inisialisasi klien GenAI dengan kunci API Anda
-// const genAI = new GoogleGenAI(import.meta.env.VITE_GEMINI_API_KEY);
-// console.log("API Key:", import.meta.env.VITE_GEMINI_API_KEY);
 const genAItest = new GoogleGenerativeAI(
   `${import.meta.env.VITE_GEMINI_API_KEY}`
 );
 export async function ResepAi(listbahanResep, jumResep) {
-  // Pastikan listbahanResep adalah array dan tidak kosong
   if (!Array.isArray(listbahanResep) || listbahanResep.length === 0) {
     return "Daftar bahan tidak valid atau kosong.";
   }
 
   try {
-    // Dapatkan model generatif. Gunakan model yang sesuai, misalnya 'gemini-1.5-flash'.
     const model = genAItest.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    // Buat prompt yang jelas untuk model AI
     const prompt = `Saya punya bahan-bahan berikut: ${listbahanResep.join(
       ", "
     )}. Berikan saya 3 ide resep makanan lengkap yang bisa saya buat dari bahan-bahan tersebut.
@@ -38,7 +32,6 @@ export async function ResepAi(listbahanResep, jumResep) {
     }
   `;
 
-    // Hasilkan konten berdasarkan prompt
     const result = await model.generateContent(prompt);
     const response = result.response;
     let text = response.text();

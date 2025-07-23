@@ -5,11 +5,14 @@ import DetailResep from "@/pages/DetailResep.vue";
 const routes = [
   {
     path: "/",
+    name: "Home",
     component: Home,
   },
   {
-    path: "/detail-resep",
+    path: "/detail-resep/:id",
+    name: "DetailResep",
     component: DetailResep,
+    props: true,
   },
 ];
 

@@ -5,11 +5,19 @@ import { ref } from "vue";
 import SpotlightCard from "@/blocks/Components/SpotlightCard/SpotlightCard.vue";
 import { useLink } from "vue-router";
 import MainNavbar from "@/components/MainNavbar.vue";
+import { useRouter } from "vue-router";
 
 const result = ref("");
 const loading = ref(false);
 
 // Fungsi untuk menangani pencarian, dipanggil oleh komponen anak
+const pilihResep = ref(null);
+const showDialog = ref(false);
+
+const detailResep = (resep) => {
+  pilihResep.value = resep;
+  showDialog.value = true;
+};
 
 const handleSearch = async (listbahanResep) => {
   loading.value = true;
@@ -65,6 +73,7 @@ const handleSearch = async (listbahanResep) => {
       >
         <SpotlightCard
           v-for="(resep, index) in result"
+          :id="index"
           class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-3 overflow-hidden cursor-pointer border border-gray-100"
           spotlight-color="rgba(100, 116, 139, 0.15)"
         >
@@ -77,6 +86,7 @@ const handleSearch = async (listbahanResep) => {
             </p>
             <div class="mt-auto">
               <button
+                @click="detailResep(resep)"
                 class="w-full bg-indigo-600 text-white py-3 px-5 rounded-xl font-semibold text-sm hover:bg-indigo-700 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-indigo-300 focus:ring-offset-2"
               >
                 Lihat Resep
@@ -84,6 +94,45 @@ const handleSearch = async (listbahanResep) => {
             </div>
           </div>
         </SpotlightCard>
+
+        <!-- dialog -->
+        <transition name="fade">
+          <div
+            v-if="showDialog"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-indigo-600 bg-opacity-50"
+          >
+            <div class="bg-white rounded-xl p-6 w-full max-w-2xl relative">
+              <button
+                @click="showDialog = false"
+                class="absolute top-3 right-3 text-gray-500 hover:text-red-600 text-xl"
+              >
+                ×
+              </button>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                  {{ pilihResep.nama }}
+                </h2>
+                <p>{{ pilihResep.deskripsi }}</p>
+
+                <h3 class="font-semibold text-gray-700 mt-4">Bahan-bahan:</h3>
+                <ul class="list-disc pl-5 text-gray-600">
+                  <li v-for="(bahan, i) in pilihResep.bahan" :key="i">
+                    {{ bahan }}
+                  </li>
+                </ul>
+
+                <h3 class="font-semibold text-gray-700 mt-4">
+                  Langkah-langkah:
+                </h3>
+                <ol class="list-decimal pl-5 text-gray-600 space-y-1">
+                  <li v-for="(step, i) in pilihResep?.langkah" :key="i">
+                    {{ step }}
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </transition>
       </div>
 
       <div
