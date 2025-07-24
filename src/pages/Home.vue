@@ -3,9 +3,7 @@ import InputBahan from "@/components/InputBahan.vue";
 import { ResepAi } from "@/api/gemini"; // Menggunakan nama fungsi yang sudah diperbaiki
 import { ref } from "vue";
 import SpotlightCard from "@/blocks/Components/SpotlightCard/SpotlightCard.vue";
-import { useLink } from "vue-router";
 import MainNavbar from "@/components/MainNavbar.vue";
-import { useRouter } from "vue-router";
 
 const result = ref("");
 const loading = ref(false);
@@ -17,6 +15,10 @@ const showDialog = ref(false);
 const detailResep = (resep) => {
   pilihResep.value = resep;
   showDialog.value = true;
+};
+
+const windowPrint = () => {
+  window.print();
 };
 
 const handleSearch = async (listbahanResep) => {
@@ -99,7 +101,8 @@ const handleSearch = async (listbahanResep) => {
         <transition name="fade">
           <div
             v-if="showDialog"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-indigo-600 bg-opacity-50"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-indigo-400 backdrop-opacity-10"
+            id="resep-detail-content"
           >
             <div class="bg-white rounded-xl p-6 w-full max-w-2xl relative">
               <button
@@ -108,7 +111,7 @@ const handleSearch = async (listbahanResep) => {
               >
                 ×
               </button>
-              <div>
+              <div class="flex flex-col gap-3">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">
                   {{ pilihResep.nama }}
                 </h2>
@@ -129,6 +132,12 @@ const handleSearch = async (listbahanResep) => {
                     {{ step }}
                   </li>
                 </ol>
+                <button
+                  @click="windowPrint"
+                  class="bg-green-600 mt-10 text-white py-2 px-4 rounded-xl font-semibold text-sm hover:bg-green-700 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-green-300 focus:ring-offset-2"
+                >
+                  Unduh PDF Resep
+                </button>
               </div>
             </div>
           </div>

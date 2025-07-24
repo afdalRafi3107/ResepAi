@@ -13,4 +13,7 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  optimizeDeps: {
+    include: ["pdfmake/build/pdfmake", "pdfmake/build/vfs_fonts"],
+  },
 });

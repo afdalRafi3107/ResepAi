@@ -4,7 +4,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAItest = new GoogleGenerativeAI(
   `${import.meta.env.VITE_GEMINI_API_KEY}`
 );
-export async function ResepAi(listbahanResep, jumResep) {
+
+export async function ResepAi(listbahanResep) {
   if (!Array.isArray(listbahanResep) || listbahanResep.length === 0) {
     return "Daftar bahan tidak valid atau kosong.";
   }
@@ -14,7 +15,7 @@ export async function ResepAi(listbahanResep, jumResep) {
 
     const prompt = `Saya punya bahan-bahan berikut: ${listbahanResep.join(
       ", "
-    )}. Berikan saya 3 ide resep makanan lengkap yang bisa saya buat dari bahan-bahan tersebut.
+    )}. Berikan saya 4 ide resep makanan lengkap yang bisa saya buat dari bahan-bahan tersebut.
      PENTING: Kembalikan jawaban HANYA dalam format array JSON yang valid. Jangan tambahkan teks pembuka atau penutup.
   Contoh format yang diinginkan:
   [

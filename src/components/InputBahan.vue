@@ -5,6 +5,7 @@ const emit = defineEmits(["submit"]);
 
 const bahanResep = ref("");
 const listbahanResep = ref([]);
+const jum = ref(3);
 
 // Fungsi untuk menambahkan bahan ke dalam daftar
 function tambahBahan() {
@@ -31,13 +32,20 @@ function kirimKeParent() {
     class="w-full flex flex-col gap-4 space-y-4 max-w-2xl mx-auto p-4 sm:p-0"
   >
     <div class="flex flex-col sm:flex-row gap-3">
-      <input
-        v-model="bahanResep"
-        @keyup.enter="tambahBahan"
-        type="text"
-        class="flex-grow border border-gray-300 p-3 rounded-lg w-full text-lg placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition-all duration-200"
-        placeholder="Contoh: Ayam, Bawang Merah, Cabai Rawit..."
-      />
+      <div class="flex gap w-full">
+        <input
+          v-model="bahanResep"
+          @keyup.enter="tambahBahan"
+          type="text"
+          class="flex-grow border border-gray-300 p-3 rounded-lg w-full text-lg placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition-all duration-200"
+          placeholder="Contoh: Ayam, Bawang Merah, Cabai Rawit..."
+        />
+        <!-- <input
+          v-model="jum"
+          type="number"
+          class="flex-grow border border-gray-300 p-3 rounded-lg w-10 text-lg placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition-all duration-200"
+        /> -->
+      </div>
       <button
         @click="tambahBahan"
         class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 w-full sm:w-auto text-lg"
