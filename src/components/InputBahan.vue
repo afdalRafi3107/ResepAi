@@ -1,27 +1,36 @@
 <script setup>
 import { ref } from "vue";
+import { distance } from "fastest-levenshtein";
 
 const emit = defineEmits(["submit"]);
 
 const bahanResep = ref("");
 const listbahanResep = ref([]);
 const jum = ref(3);
+const kataTerlarang = ["manusia", "racun", "sianida", "ganja", "darah"];
+const errorMessage = ref("");
 
-// Fungsi untuk menambahkan bahan ke dalam daftar
+const toleransiTypo = 2;
+
 function tambahBahan() {
-  if (bahanResep.value.trim()) {
+  const bahan = bahanResep.value.trim().toLowerCase();
+  const cekKataTerlarag = kataTerlarang.some(
+    (kata) => distance(bahan, kata) <= toleransiTypo
+  );
+  if (!bahan) return;
+  if (cekKataTerlarag) {
+    errorMessage.value = `${bahan} tidak bisa digunakan sebagai resep , ulangi lagi!!`;
+  } else {
     listbahanResep.value.push(bahanResep.value.trim());
     bahanResep.value = "";
+    errorMessage.value = "";
   }
-  // Tidak ada emit di sini untuk mencegah panggilan API yang tidak perlu
 }
 
-// Fungsi untuk menghapus bahan dari daftar
 function hapusBahanMasak(index) {
   listbahanResep.value.splice(index, 1);
 }
 
-// Fungsi ini dipanggil hanya saat tombol 'Cari Resep' diklik
 function kirimKeParent() {
   emit("submit", listbahanResep.value);
 }
@@ -53,7 +62,7 @@ function kirimKeParent() {
         Tambah Bahan
       </button>
     </div>
-
+    <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
     <div
       v-if="listbahanResep.length > 0"
       class="flex flex-wrap gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200"

@@ -16,11 +16,6 @@ const props = defineProps({
   },
 });
 
-// --- (Opsional tapi direkomendasikan) Daftarkan Font Kustom ---
-// @vue-pdf/renderer tidak secara otomatis menggunakan font browser Anda.
-// Anda perlu mendaftarkan font yang ingin Anda gunakan.
-// Untuk kemudahan, Anda bisa menggunakan font dari Google Fonts CDN.
-// Pastikan URL dapat diakses saat PDF dirender.
 VFont.register({
   family: "Roboto", // Nama font yang akan Anda gunakan di style
   src: "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxK.ttf",
@@ -31,17 +26,13 @@ VFont.register({
   fontStyle: "normal",
   fontWeight: "bold",
 });
-// Anda bisa mendaftarkan lebih banyak font jika diperlukan
 
-// --- Definisikan Stylesheet untuk PDF ---
-// Ini mirip dengan StyleSheet.create di React Native atau CSS-in-JS.
-// Properti gaya mirip dengan CSS, tetapi ditulis dalam camelCase.
 const styles = VStyleSheet.create({
   page: {
     flexDirection: "column",
-    backgroundColor: "#FFFFFF", // Latar belakang halaman PDF
+    backgroundColor: "#FFFFFF",
     padding: 30,
-    fontFamily: "Roboto", // Default font untuk halaman
+    fontFamily: "Roboto",
   },
   section: {
     marginVertical: 10,
