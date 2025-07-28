@@ -1,29 +1,31 @@
 <script setup>
 import { ref } from "vue";
 import { distance } from "fastest-levenshtein";
+import { BadWords } from "@/utils/Badwords";
 
 const emit = defineEmits(["submit"]);
 
 const bahanResep = ref("");
 const listbahanResep = ref([]);
 const jum = ref(3);
-const kataTerlarang = ["manusia", "racun", "sianida", "ganja", "darah"];
+const kataTerlarang = BadWords;
 const errorMessage = ref("");
+const loading = ref(false);
 
-const toleransiTypo = 2;
+const toleransiTypo = 1;
 
 function tambahBahan() {
   const bahan = bahanResep.value.trim().toLowerCase();
-  const cekKataTerlarag = kataTerlarang.some(
-    (kata) => distance(bahan, kata) <= toleransiTypo
-  );
-  if (!bahan) return;
-  if (cekKataTerlarag) {
-    errorMessage.value = `${bahan} tidak bisa digunakan sebagai resep , ulangi lagi!!`;
-  } else {
+  if (!bahan) {
+    errorMessage.value = "Bahan tidak boleh kosong";
+  }
+  try {
     listbahanResep.value.push(bahanResep.value.trim());
     bahanResep.value = "";
     errorMessage.value = "";
+  } catch (error) {
+    console.log(error);
+  } finally {
   }
 }
 

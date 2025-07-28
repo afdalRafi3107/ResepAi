@@ -5,9 +5,8 @@ import { ref } from "vue";
 import SpotlightCard from "@/blocks/Components/SpotlightCard/SpotlightCard.vue";
 import MainNavbar from "@/components/MainNavbar.vue";
 
-const result = ref("");
+const result = ref(null);
 const loading = ref(false);
-
 // Fungsi untuk menangani pencarian, dipanggil oleh komponen anak
 const pilihResep = ref(null);
 const showDialog = ref(false);
@@ -69,8 +68,16 @@ const handleSearch = async (listbahanResep) => {
       </div>
 
       <!-- card list -->
+      <!-- Bahan tidak valid -->
       <div
-        v-else-if="result.length > 0"
+        v-else-if="result === 'TIDAK'"
+        class="text-center text-red-600 text-lg font-semibold"
+      >
+        Kombinasi bahan tidak valid atau berbahaya. Silakan ulangi dengan bahan
+        lain.
+      </div>
+      <div
+        v-else-if="Array.isArray(result) && result.length > 0"
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 xl:gap-10"
       >
         <SpotlightCard
